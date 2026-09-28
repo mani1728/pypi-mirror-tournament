@@ -47,6 +47,16 @@ source "$CONFIG_FILE"
 
 mkdir -p "$LOG_DIR" "$STATE_DIR"
 
+LOCK_FILE="$STATE_DIR/tournament.lock"
+
+exec 9>"$LOCK_FILE"
+
+if ! flock -n 9; then
+    echo "ERROR: Another PyPI Mirror Tournament is already running." >&2
+    echo "LOCK_FILE: $LOCK_FILE" >&2
+    exit 75
+fi
+
 TIMESTAMP="$(date '+%Y-%m-%d_%H-%M-%S')"
 LOG_FILE="$LOG_DIR/tournament_${TIMESTAMP}.log"
 WORK_DIR="$(mktemp -d "/tmp/pypi-mirror-tournament.XXXXXX")"
