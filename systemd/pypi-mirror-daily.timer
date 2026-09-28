@@ -1,0 +1,11 @@
+[Unit]
+Description=Run PyPI Mirror Daily Health Check every 24 hours
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=24h
+Persistent=true
+Unit=pypi-mirror-daily.service
+
+[Install]
+WantedBy=timers.target

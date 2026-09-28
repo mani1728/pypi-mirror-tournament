@@ -1,0 +1,11 @@
+[Unit]
+Description=Run PyPI Mirror Full Tournament every 7 days
+
+[Timer]
+OnBootSec=30min
+OnActiveSec=7d
+Persistent=true
+Unit=pypi-mirror-weekly.service
+
+[Install]
+WantedBy=timers.target

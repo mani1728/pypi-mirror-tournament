@@ -1,0 +1,15 @@
+[Unit]
+Description=PyPI Mirror Tournament - Weekly Full Tournament
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=/workspace/projects/pypi-mirror-tournament
+
+[Service]
+Type=oneshot
+User=mani
+Group=mani
+WorkingDirectory=/workspace/projects/pypi-mirror-tournament
+ExecStart=/workspace/projects/pypi-mirror-tournament/bin/pypi-mirror-tournament.sh --apply
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=PyPI Mirror Tournament - Daily Health Check
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=/workspace/projects/pypi-mirror-tournament
+
+[Service]
+Type=oneshot
+User=mani
+Group=mani
+WorkingDirectory=/workspace/projects/pypi-mirror-tournament
+ExecStart=/workspace/projects/pypi-mirror-tournament/bin/pypi-mirror-daily-check.sh
+
+[Install]
+WantedBy=multi-user.target

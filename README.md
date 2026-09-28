@@ -129,9 +129,45 @@ The quick-check script is:
 ./bin/pypi-mirror-daily-check.sh
 ```
 
-It checks the currently selected mirror using the project's configured health limits.
+It checks the currently selected mirror using the project's configured health limits and performs a real pip download of the configured daily test package.
 
-Further automation can use a failed daily check to initiate an emergency tournament.
+If the current mirror fails the health or real-download check, the script automatically starts an emergency tournament. A successful emergency tournament selects and applies the fastest qualified replacement mirror.
+
+## systemd Automation
+
+The repository includes four systemd units:
+
+```text
+systemd/
+├── pypi-mirror-daily.service
+├── pypi-mirror-daily.timer
+├── pypi-mirror-weekly.service
+└── pypi-mirror-weekly.timer
+```
+
+The daily timer runs the quick health and real-download check every 24 hours.
+
+The weekly timer runs a full tournament every 7 days using `--apply`. Normal hysteresis rules remain in effect, so the current mirror is not replaced unless the selection policy permits it.
+
+Both services run as user `mani`, require the project filesystem to be mounted, and wait for `network-online.target`.
+
+Install the units with:
+
+```bash
+sudo cp systemd/pypi-mirror-*.service systemd/pypi-mirror-*.timer /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now pypi-mirror-daily.timer pypi-mirror-weekly.timer
+```
+
+Inspect the active schedules with:
+
+```bash
+systemctl list-timers pypi-mirror-daily.timer pypi-mirror-weekly.timer
+```
+
+The timers use persistent scheduling so missed runs can be handled after the system becomes available again.
+
+The tournament itself uses a non-blocking `flock` lock under `state/` to prevent concurrent full tournament runs.
 
 ## Configuration
 
