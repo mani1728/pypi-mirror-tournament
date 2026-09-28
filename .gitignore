@@ -1,0 +1,58 @@
+# ============================================================
+# PyPI Mirror Tournament - Git Ignore Rules
+# ============================================================
+
+# Runtime logs
+logs/*
+!logs/.gitkeep
+
+# Runtime state
+# Contains the locally selected mirror and other machine state.
+state/*
+!state/.gitkeep
+
+# Script backups
+*.backup
+*.backup-*
+*.bak
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Python generated files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Test / coverage caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# IDE / editor local settings
+.idea/
+.vscode/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Local environment / secrets
+.env
+.env.*
+!.env.example
+
+# pip credentials or local overrides
+pip.conf
+pip.ini
